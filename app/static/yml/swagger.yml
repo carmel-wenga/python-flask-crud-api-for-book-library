@@ -1,0 +1,120 @@
+openapi: "3.0.0"
+info:
+  title: "This is the Books API "
+  version: "1.0.0"
+paths:
+  /api/v1/books/:
+    get:
+      summary: "Get the list of books"
+      operationId: getBook
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllBooksSchema'
+    post:
+      summary: Create a new Book
+      operationId: addBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookSchema'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/BookSchema'
+
+  /api/v1/books/{isbn}:
+    parameters:
+      - in: path
+        name: isbn
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get a specific book
+      operationId: getBook
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookSchema'
+    delete:
+      summary: delete specific book
+      operationId: deleteBook
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+    put:
+      summary: update specific book
+      operationId: updateBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookSchema'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+
+
+components:
+  schemas:
+    BookSchema:
+      type: object
+      properties:
+        book_id:
+          type: string
+          format: uuid
+        isbn:
+          type: string
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        language:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        publisher:
+          type: string
+        publish_date:
+          type: string
+          format: date
+        price:
+          type: number
+          format: float
+        pages:
+          type: integer
+    GetAllBooksSchema:
+      type: object
+      properties:
+        number_results:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookSchema'
