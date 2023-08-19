@@ -1,5 +1,6 @@
 import csv
 
+
 def books_generator(batch_size=100):
     lines = list()
     with open('books.csv', 'r') as file:
