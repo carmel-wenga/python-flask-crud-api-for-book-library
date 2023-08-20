@@ -16,19 +16,19 @@ docker-compose up -d --build
 ```
 2. Initialize the database used by the app
 ```commandline
-docker-compose exec web flask db init
+docker-compose exec backend flask db init
 ```
 Create migrations with the following command
 ```commandline
-docker-compose exec web flask db migrate -m "initial migrations"
+docker-compose exec backend flask db migrate -m "initial migrations"
 ```
 Apply the migrations by doing
 ```commandline
-docker-compose exec web flask db upgrade
+docker-compose exec backend flask db upgrade
 ```
 3. Use the following command to connect to the postgres image and inspect the contains of the database
 ```commandline
-docker-compose exec datahub psql --username=pguser --dbname=bookexdb
+docker-compose exec database psql --username=pguser --dbname=bookexdb
 ```
 Note that the username ```pguser``` and the database name ```bookexdb``` are
 defined in the ```.env``` file that should contain secrets information about
