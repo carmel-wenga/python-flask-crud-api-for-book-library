@@ -82,7 +82,7 @@ curl --location --request DELETE '172.23.0.3:5000/api/v1/books/9780439358071'
 curl --location --request GET '172.23.0.3:5000/api/v1/books/'
 ```
 
-Go to ```http://172.23.0.3:5000/api``` for more details on the description of the api.
+Go to ```http://172.23.0.3:5000/api/docs``` for more details on the description of the api.
 
 where ```172.23.0.3``` is my local ip address. It might be different for yours.
 
