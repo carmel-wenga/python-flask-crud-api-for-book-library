@@ -1,0 +1,5 @@
+# ignore the virtualenv folder
+lib/
+
+# ignore the .env config file
+.env

@@ -5,8 +5,6 @@ This repo aims to build a microservice app that explores books,
 * Python,
 * Flask : a python web framework that can be used to build api
 * Postgresql : a relational database that will store our data,
-* Elasticsearch : a such engine that we will use to easily such for data into its index, 
-* Jenkins: 
 * Docker : to containerized our application,
 * Kubernetes : use for deployment.
 
@@ -35,4 +33,3 @@ docker-compose exec datahub psql --username=pguser --dbname=bookexdb
 Note that the username ```pguser``` and the database name ```transactions``` are
 defined in the ```.env``` file that should contain secrets information about
 the application. It should not be tracker by git.
-
