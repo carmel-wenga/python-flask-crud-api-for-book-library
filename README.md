@@ -30,6 +30,56 @@ docker-compose exec web flask db upgrade
 ```commandline
 docker-compose exec datahub psql --username=pguser --dbname=bookexdb
 ```
-Note that the username ```pguser``` and the database name ```transactions``` are
+Note that the username ```pguser``` and the database name ```bookexdb``` are
 defined in the ```.env``` file that should contain secrets information about
 the application. It should not be tracker by git.
+
+### App Structure
+
+This Backend App exposes 5 endpoints:
+
+1. Create Book: endpoint is used to create a book
+```commandline
+curl --location --request POST '172.23.0.3:5000/api/v1/books/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "isbn": "9780439358071",
+    "title": "Harry Potter and the Order of the Phoenix",
+    "authors": "J.K. Rowling, Mary GrandPré (Illustrator)",
+    "description": "There is a door at the end of a silent corridor. And it’s haunting Harry Pottter’s dreams. Why else would he be waking in the middle of the night, screaming in terror?Harry has a lot on his mind for this, his fifth year at Hogwarts: a Defense Against the Dark Arts teacher with a personality like poisoned honey; a big surprise on the Gryffindor Quidditch team; and the looming terror of the Ordinary Wizarding Level exams. But all these things pale next to the growing threat of He-Who-Must-Not-Be-Named - a threat that neither the magical government nor the authorities at Hogwarts can stop.As the grasp of darkness tightens, Harry must discover the true depth and strength of his friends, the importance of boundless loyalty, and the shocking price of unbearable sacrifice.His fate depends on them all.",
+    "language": "English",
+    "genres": "Fantasy, Young Adult, Fiction, Magic, Childrens, Adventure, Audiobook, Middle Grade, Classics, Science Fiction Fantasy",
+    "publisher": "Scholastic Inc.",
+    "publish_date": "2004-09-28",
+    "price": 7.38,
+    "pages": 870
+  }'
+```
+2. Read Book: Add new book in the database
+```commandline
+curl --location --request GET '172.23.0.3:5000/api/v1/books/9780439358071'
+```
+
+3. Update Book
+```commandline
+curl --location --request PUT '172.23.0.3:5000/api/v1/books/9780439358071' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "authors": "J.K. Rowling, Mary GrandPré",
+    "language": "English",
+    "pages": 950,
+    "price": 15.38
+}'
+```
+
+4. Delete Book
+```commandline
+curl --location --request DELETE '172.23.0.3:5000/api/v1/books/9780439358071'
+```
+
+5. Get all book
+```commandline
+curl --location --request GET '172.23.0.3:5000/api/v1/books/'
+```
+
+where ```172.23.0.3``` is my local ip address. It might be different for yours.
