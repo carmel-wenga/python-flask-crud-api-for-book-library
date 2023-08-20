@@ -82,4 +82,49 @@ curl --location --request DELETE '172.23.0.3:5000/api/v1/books/9780439358071'
 curl --location --request GET '172.23.0.3:5000/api/v1/books/'
 ```
 
+Go to ```http://172.23.0.3:5000/api``` for more details on the description of the api.
+
 where ```172.23.0.3``` is my local ip address. It might be different for yours.
+
+### Project Structure
+```commandline
+BookEx
+├── app
+│   ├── api
+│   │   └── v1
+│   │       ├── books
+│   │       │   ├── __init__.py
+│   │       │   └── views.py
+│   │       └── __init__.py
+│   ├── domain
+│   │   └── books
+│   │       ├── models.py
+│   │       └── utils.py
+│   ├── __init__.py
+│   ├── main
+│   │   ├── __init__.py
+│   │   └── views.py
+│   └── static
+│       └── yml
+│           └── swagger.yml
+├── books.csv
+├── config.py
+├── docker-compose.yml
+├── Dockerfile
+├── .dockerignore
+├── .env
+├── .gitignore
+├── manage.py
+├── README.md
+├── requirements.txt
+├── settings.py
+└── utils.py
+```
+
+* The ```api``` package contains only one version of the api server. The first version 
+```v1```. The ```api/v1/books/views.py``` contains all the endpoints for CRUD operations on books
+
+* The ```domain/books/models.py``` files defines the Books models and ```domain/books/utils.py```
+defines useful functions on books
+
+* ```static/yml/swagger.yml``` is the openapi documentation of the api 
