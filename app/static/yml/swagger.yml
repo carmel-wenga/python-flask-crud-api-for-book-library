@@ -2,11 +2,17 @@ openapi: "3.0.0"
 info:
   title: "This is the Books API "
   version: "1.0.0"
+tags:
+  - name: Book
+    description: Endpoints on Books
+
 paths:
   /api/v1/books/:
     get:
+      tags:
+        - Book
       summary: "Get the list of books"
-      operationId: getBook
+      operationId: getAllBook
       responses:
         '200':
           description: OK
@@ -15,6 +21,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAllBooksSchema'
     post:
+      tags:
+        - Book
       summary: Create a new Book
       operationId: addBook
       requestBody:
@@ -43,6 +51,8 @@ paths:
         schema:
           type: string
     get:
+      tags:
+        - Book
       summary: Get a specific book
       operationId: getBook
       responses:
@@ -53,6 +63,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/BookSchema'
     delete:
+      tags:
+        - Book
       summary: delete specific book
       operationId: deleteBook
       responses:
@@ -61,6 +73,8 @@ paths:
         '404':
           description: Not found
     put:
+      tags:
+        - Book
       summary: update specific book
       operationId: updateBook
       requestBody:
@@ -73,7 +87,6 @@ paths:
           description: OK
         '404':
           description: Not found
-
 
 components:
   schemas:
