@@ -3,9 +3,13 @@
 This repo aims to build a microservice app that explores books,
 
 * Python,
-* Flask : a python web framework that can be used to build api
+* Flask : a python web framework that we use to build backend api
+* SQLAlchemy: For the ORM
+* Alembic : for the database migration
 * Postgresql : a relational database that will store our data,
 * Docker : to containerized our application,
+* Docker Compose: For development
+* Nginx as server and reserve proxy
 * Kubernetes : use for deployment.
 
 ### Steps to launch the app
