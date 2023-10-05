@@ -34,7 +34,7 @@ def create_book():
     if book is None:
         book = build_book(data)
         add(book)
-        return jsonify({"message": f"Book with isbn {data.get('isbn')} created successfully."}), 200
+        return jsonify({"message": f"Book with isbn {data.get('isbn')} created successfully."}), 201
     else:
         return jsonify({"message": f"Book with isbn {data.get('isbn')} already exists."}), 409
 
@@ -44,7 +44,7 @@ def delete_book(isbn: str):
     status = delete(isbn)
     print(status)
     if status == 1:
-        return jsonify({"message": f"Book with isbn {isbn} deleted."}), 200
+        return jsonify({"message": f"Book with isbn {isbn} deleted."}), 204
     else:
         return jsonify({"message": f"Book with isbn {isbn} not found."}), 404
 

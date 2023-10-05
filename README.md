@@ -10,11 +10,19 @@ This repo aims to build a microservice app that explores books,
 * Docker : to containerized our application,
 * Docker Compose: For development
 * Nginx as server and reserve proxy
-* Kubernetes : use for deployment.
 
 ### Steps to launch the app
 Run the following commands :
+
+Create the workspace repository and clone the project
+
+```commandline
+mkdir /home/projects/BookEx && cd /home/projects/BookEx
+git clone https://github.com/suzie-la/bookex.git
+```
+
 1. Build and run the app 
+
 ```commandline
 docker-compose up -d --build 
 ```
@@ -44,7 +52,7 @@ This Backend App exposes 5 endpoints:
 
 1. Create Book: endpoint is used to create a book
 ```commandline
-curl --location --request POST '172.23.0.3:5000/api/v1/books/' \
+curl --location --request POST 'localhost:5000/api/v1/books/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "isbn": "9780439358071",
@@ -61,12 +69,12 @@ curl --location --request POST '172.23.0.3:5000/api/v1/books/' \
 ```
 2. Read Book: Add new book in the database
 ```commandline
-curl --location --request GET '172.23.0.3:5000/api/v1/books/9780439358071'
+curl --location --request GET 'localhost:5000/api/v1/books/9780439358071'
 ```
 
 3. Update Book
 ```commandline
-curl --location --request PUT '172.23.0.3:5000/api/v1/books/9780439358071' \
+curl --location --request PUT 'localhost:5000/api/v1/books/9780439358071' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "authors": "J.K. Rowling, Mary GrandPré",
@@ -78,17 +86,15 @@ curl --location --request PUT '172.23.0.3:5000/api/v1/books/9780439358071' \
 
 4. Delete Book
 ```commandline
-curl --location --request DELETE '172.23.0.3:5000/api/v1/books/9780439358071'
+curl --location --request DELETE 'localhost:5000/api/v1/books/9780439358071'
 ```
 
 5. Get all book
 ```commandline
-curl --location --request GET '172.23.0.3:5000/api/v1/books/'
+curl --location --request GET 'localhost:5000/api/v1/books/'
 ```
 
-Go to ```http://172.23.0.3:5000/api/docs``` for more details on the description of the api.
-
-where ```172.23.0.3``` is my local ip address. It might be different for yours.
+Go to ```http://localhost:5000/api/docs``` for more details on the description of the api.
 
 ### Project Structure
 ```commandline
@@ -123,6 +129,27 @@ BookEx
 ├── requirements.txt
 ├── settings.py
 └── utils.py
+```
+---
+1. Entrypoint of the app
+
+The entry point of the application is the ```app/__init__.py``` file. The code below creates the flask app, configure 
+it, creates the sqlalchemy db and link both the app and the db together
+
+```python
+# create flask app
+app = Flask(__name__)
+
+# Allow CORS for all routes
+CORS(app)
+
+# import flask configurations
+app.config.from_object(Config)
+
+# create the database
+db = SQLAlchemy(app)
+
+Migrate(app, db)
 ```
 
 * The ```api``` package contains only one version of the api server. The first version 

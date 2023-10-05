@@ -93,9 +93,6 @@ components:
     BookSchema:
       type: object
       properties:
-        book_id:
-          type: string
-          format: uuid
         isbn:
           type: string
         title:

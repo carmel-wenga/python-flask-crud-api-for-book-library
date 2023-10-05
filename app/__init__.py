@@ -4,13 +4,16 @@ from flask_migrate import Migrate
 from config import Config
 
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/yml/swagger.yml'  # Our API url (can of course be a local resource)
 
-
 # create flask app
 app = Flask(__name__)
+
+# Allow CORS for all routes
+CORS(app)
 
 # import flask configurations
 app.config.from_object(Config)
