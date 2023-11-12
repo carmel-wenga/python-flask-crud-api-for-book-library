@@ -42,7 +42,6 @@ def create_book():
 @books_bp.route("/<isbn>", methods=["DELETE"])
 def delete_book(isbn: str):
     status = delete(isbn)
-    print(status)
     if status == 1:
         return jsonify({"message": f"Book with isbn {isbn} deleted."}), 204
     else:
