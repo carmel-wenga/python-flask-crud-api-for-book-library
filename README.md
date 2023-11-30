@@ -18,7 +18,7 @@ Create the workspace repository and clone the project
 
 ```commandline
 mkdir /home/projects/BookEx && cd /home/projects/BookEx
-git clone https://github.com/suzie-la/bookex.git
+git clone https://github.com/carmel-wenga/python-flask-crud-api-for-book-library
 ```
 
 1. Build and run the app 
