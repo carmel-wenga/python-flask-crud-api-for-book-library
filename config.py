@@ -6,8 +6,8 @@ load_dotenv(os.path.join(BASEDIR, '.env'))
 
 
 class Config(object):
-    FLASK_ENV = 'development'
-    TESTING = True
+    FLASK_ENV = os.environ.get('FLASK_ENV')
+    TESTING = os.environ.get('TESTING')
     SECRET_KEY = os.environ.get('SECRET_KEY')
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
@@ -20,6 +20,6 @@ class Config(object):
         port=os.environ.get("POSTGRES_PORT"),
         db_name=os.environ.get("POSTGRES_DB")
     )
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
 
 

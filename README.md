@@ -2,7 +2,7 @@
 
 This repo aims to build a microservice app that explores books,
 
-* Python,
+* Python: version 3.10
 * Flask : a python web framework that we use to build backend api
 * SQLAlchemy: For the ORM
 * Alembic : for the database migration
@@ -20,22 +20,26 @@ Create the workspace repository and clone the project
 mkdir /home/projects/BookEx && cd /home/projects/BookEx
 git clone https://github.com/carmel-wenga/python-flask-crud-api-for-book-library
 ```
+Before being able to run the app, you need to create the virtualenv
+
+How to install/create the virtualenv on windows and linux ? Add those steps
+
+````commandline
+mkdir lib/env
+````
 
 1. Build and run the app 
 
 ```commandline
 docker-compose up -d --build 
 ```
-2. Initialize the database used by the app
+2. Initialize the database and run the migrations
+
+Script ```initdb.sh``` contains the commands below to initialize the database and run the migrations
+
 ```commandline
 docker-compose exec backend flask db init
-```
-Create migrations with the following command
-```commandline
 docker-compose exec backend flask db migrate -m "initial migrations"
-```
-Apply the migrations by doing
-```commandline
 docker-compose exec backend flask db upgrade
 ```
 3. Use the following command to connect to the postgres image and inspect the contains of the database
