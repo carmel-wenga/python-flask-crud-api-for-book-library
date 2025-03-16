@@ -15,3 +15,6 @@ RUN pip install -r requirements.txt
 
 # copy every content from the local file to the image
 COPY . /home/projects/BookEx
+
+EXPOSE 5000
+CMD ["python", "manage.py", "run", "--host=0.0.0.0"]

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  POSTGRES_DB: "bookexdb"
+  POSTGRES_USER: "pguser"
+  POSTGRES_HOST: "database-service"
+  POSTGRES_PORT: "5432"
+  FLASK_ENV: "development"
+  FLASK_DEBUG: "True"
+  STATIC_FOLDER: "static"
+  TEMPLATES_FOLDER: "templates"
+  SQLALCHEMY_TRACK_MODIFICATIONS: "False"
+  TESTING: "True"

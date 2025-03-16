@@ -2,7 +2,7 @@ from settings import BASEDIR
 from dotenv import load_dotenv
 import os
 
-load_dotenv(os.path.join(BASEDIR, '.env'))
+# load_dotenv(os.path.join(BASEDIR, '.env'))
 
 
 class Config(object):

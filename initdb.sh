@@ -7,4 +7,4 @@ docker compose exec backend flask db init
 docker compose exec backend flask db migrate -m "initial migration"
 
 # Apply the migrations
-docker compose exec backend flask migrate
+docker compose exec backend flask db upgrade
