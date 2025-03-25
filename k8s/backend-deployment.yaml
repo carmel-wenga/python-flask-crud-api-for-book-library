@@ -81,16 +81,3 @@ spec:
               key: SECRET_KEY
         - name: DATABASE_URL
           value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  selector:
-    app: backend
-  ports:
-  - protocol: TCP
-    port: 5000
-    targetPort: 5000
-  type: NodePort

@@ -163,3 +163,43 @@ Migrate(app, db)
 defines useful functions on books
 
 * ```static/yml/swagger.yml``` is the openapi documentation of the api 
+
+## Building the Docker Image for the Backend
+If you are working with minikube and your images are not being pulled, 
+you can build the image locally and use it in your kubernetes cluster. You should
+build the image inside the minikube container registry. Use the following command to 
+use minikube docker daemon:
+
+```commandline
+eval $(minikube docker-env)
+```
+
+Then build the image with the following command:
+
+```commandline
+docker build -t [image-name]:latest .
+```
+
+## Deploying the app on Kubernetes
+The app can be deployed on kubernetes using the ```k8s``` folder. 
+The folder contains the following files:
+* ```backend-deployment.yaml```: The deployment file for the backend app
+* ```configmap.yaml```: The configmap file for the backend app
+* ```postgres-deployment.yaml```: The deployment file for the database
+* ```secret.yaml```: The secret file for the database
+
+```commandline
+$ kubectl apply -f .\k8s\secret.yaml
+$ kubectl apply -f .\k8s\configmap.yaml
+$ kubectl apply -f .\k8s\postgres-deployment.yaml
+$ kubectl apply -f .\k8s\backend-deployment.yaml
+```
+
+Create migration and upgrade the database
+
+```commandline
+$ kubectl exec -it [backend-pod-name] -- flask db init
+$ kubectl exec -it [backend-pod-name] -- flask db migrate -m "initial migrations"
+$ kubectl exec -it [backend-pod-name] -- flask db upgrade
+```
+run ```kubectl get pods``` to get the backend pod name
