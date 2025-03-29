@@ -42,6 +42,13 @@ docker-compose exec backend flask db init
 docker-compose exec backend flask db migrate -m "initial migrations"
 docker-compose exec backend flask db upgrade
 ```
+
+Since I have already run the two first commands above, and a migrations folder has been created in the root directory, 
+You only need to run the ```flask db upgrade``` command.
+
+If you want to run all the commands, delete the ```migrations``` folder first with admin privileges.
+
+```commandline
 3. Use the following command to connect to the postgres image and inspect the contains of the database
 ```commandline
 docker-compose exec database psql --username=pguser --dbname=bookexdb
@@ -164,38 +171,38 @@ defines useful functions on books
 
 * ```static/yml/swagger.yml``` is the openapi documentation of the api 
 
-## Building the Docker Image for the Backend
-If you are working with minikube and your images are not being pulled, 
-you can build the image locally and use it in your kubernetes cluster. You should
-build the image inside the minikube container registry. Use the following command to 
-use minikube docker daemon:
+# Deploy the app on Kubernetes
 
-```commandline
-eval $(minikube docker-env)
-```
+I have used Docker Desktop for Windows to deploy the app on Kubernetes.
+
+## Building the Docker image
 
 Then build the image with the following command:
 
 ```commandline
-docker build -t [image-name]:latest .
+docker build -t libackend:latest .
 ```
 
 ## Deploying the app on Kubernetes
 The app can be deployed on kubernetes using the ```k8s``` folder. 
 The folder contains the following files:
-* ```backend-deployment.yaml```: The deployment file for the backend app
-* ```configmap.yaml```: The configmap file for the backend app
-* ```postgres-deployment.yaml```: The deployment file for the database
-* ```secret.yaml```: The secret file for the database
 
+* ```configmap.yaml```: The configmap file for the backend app
+* ```secret.yaml```: Contains secrets for the database
+* ```postgres-deployment.yaml```: The deployment file for the database
+* ```postgres-service.yaml```: The service configuration file for the database
+* ```postgres-pvc.yaml```: The persistent volume claim configuration file for the database
+* ```backend-deployment.yaml```: the deployment configuration for the backend app
+* ```backend-service.yaml```: the service configuration for the backend app
+
+Run the command below to deploy the app on kubernetes
 ```commandline
-$ kubectl apply -f .\k8s\secret.yaml
-$ kubectl apply -f .\k8s\configmap.yaml
-$ kubectl apply -f .\k8s\postgres-deployment.yaml
-$ kubectl apply -f .\k8s\backend-deployment.yaml
+$ kubectl apply -f .\k8s
 ```
 
-Create migration and upgrade the database
+## Database migrations
+
+Then apply the database migrations by running the following commands:
 
 ```commandline
 $ kubectl exec -it [backend-pod-name] -- flask db init
@@ -203,3 +210,35 @@ $ kubectl exec -it [backend-pod-name] -- flask db migrate -m "initial migrations
 $ kubectl exec -it [backend-pod-name] -- flask db upgrade
 ```
 run ```kubectl get pods``` to get the backend pod name
+
+Since the ```migrations``` folder has already been created, you only need to run the ```flask db upgrade``` command.
+
+
+## Test the app
+
+To test the app, you need to connect to the backend pod with the following command:
+
+```commandline
+kubectl exec -it [backend-pod-name] -- sh
+```
+
+Then run the following command to test creation of a book:
+
+```commandline
+curl --location --request POST 'localhost:5000/api/v1/books/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "isbn": "9780439358071",
+    "title": "Harry Potter and the Order of the Phoenix",
+    "authors": "J.K. Rowling, Mary GrandPré (Illustrator)",
+    "description": "There is a door at the end of a silent corridor. And it’s haunting Harry Pottter’s dreams. Why else would he be waking in the middle of the night, screaming in terror?Harry has a lot on his mind for this, his fifth year at Hogwarts: a Defense Against the Dark Arts teacher with a personality like poisoned honey; a big surprise on the Gryffindor Quidditch team; and the looming terror of the Ordinary Wizarding Level exams. But all these things pale next to the growing threat of He-Who-Must-Not-Be-Named - a threat that neither the magical government nor the authorities at Hogwarts can stop.As the grasp of darkness tightens, Harry must discover the true depth and strength of his friends, the importance of boundless loyalty, and the shocking price of unbearable sacrifice.His fate depends on them all.",
+    "language": "English",
+    "genres": "Fantasy, Young Adult, Fiction, Magic, Childrens, Adventure, Audiobook, Middle Grade, Classics, Science Fiction Fantasy",
+    "publisher": "Scholastic Inc.",
+    "publish_date": "2004-09-28",
+    "price": 7.38,
+    "pages": 870
+  }'
+```
+Note that I'm using localhost because I'm connected to the pod. If you want to test the app from your local machine, 
+you need to expose the service to be accessible from outside the cluster.
