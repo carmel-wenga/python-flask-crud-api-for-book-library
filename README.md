@@ -27,6 +27,51 @@ How to install/create the virtualenv on windows and linux ? Add those steps
 ````commandline
 mkdir lib/env
 ````
+# Deploy the app on Docker
+1. Create a Docker network that will host the frontend, the backend and the database
+```commandline
+docker network create libnetwork
+```
+
+2. Run Postgres container inside the libnetwork
+```commandline
+docker run --name database --network libnetwork --env-file .postgres.env -p 5432:5432 -d postgres
+```
+3. Build the backend image and run it inside the libnetwork
+```commandline
+docker build -t libapi:latest .
+```
+Then run the libapi container by specifying the environment variables related to the database
+
+```commandline
+docker run --name libapi --network libnetwork --env-file .env -p 5000:5000 -d libapi:latest
+```
+5. Initialize the database and run the migrations
+Connect to the backend container by running the following commands
+
+```commandline
+docker exec -it libapi sh
+``` 
+Then run the following commands to initialize the database and run the migrations
+```commandline
+flask db init
+flask db migrate -m "initial migrations"
+flask db upgrade
+```
+Since the migrations folder has already been created, you only need to run the ```flask db upgrade``` command. If 
+everything is ok, you should see a result similar to the one below:
+
+```commandline
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.  
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 26496524190f, initial migration
+```
+6. Test the application
+Go to ```http://localhost:5000/api/docs``` for more details on the description of the api.
+Use the available endpoints to create a book, read a book, update a book, delete a book and get all books from the 
+openapi documentation.
+
+# Deploy the app on Docker Compose
 
 1. Build and run the app 
 
