@@ -3,5 +3,6 @@ lib/
 
 # ignore the .env config file
 .env
+.postgres.env
 
 .idea/
